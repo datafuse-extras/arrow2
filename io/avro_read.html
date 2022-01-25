@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Write CSV - arrow2 documentation</title>
+        <title>Read Avro - arrow2 documentation</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html" class="active"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html" class="active"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,124 +134,62 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="write-csv"><a class="header" href="#write-csv">Write CSV</a></h1>
-<p>When compiled with feature <code>io_csv</code>, you can use this crate to write CSV files.</p>
-<p>This crate relies on <a href="https://crates.io/crates/csv">the crate csv</a> to write well-formed CSV files, which your code should also depend on.</p>
-<p>The following example writes a batch as a CSV file with the default configuration:</p>
-<pre><pre class="playground"><code class="language-rust">use arrow2::{
-    array::{Array, Int32Array},
-    chunk::Chunk,
-    error::Result,
-    io::csv::write,
-};
+                        <h1 id="avro-read"><a class="header" href="#avro-read">Avro read</a></h1>
+<p>When compiled with feature <code>io_avro_async</code>, you can use this crate to read Avro files
+asynchronously.</p>
+<pre><pre class="playground"><code class="language-rust">use std::sync::Arc;
 
-fn write_batch&lt;A: AsRef&lt;dyn Array&gt;&gt;(path: &amp;str, columns: &amp;[Chunk&lt;A&gt;]) -&gt; Result&lt;()&gt; {
-    let writer = &amp;mut write::WriterBuilder::new().from_path(path)?;
+use futures::pin_mut;
+use futures::StreamExt;
+use tokio::fs::File;
+use tokio_util::compat::*;
 
-    write::write_header(writer, &amp;[&quot;c1&quot;])?;
+use arrow2::error::Result;
+use arrow2::io::avro::read::{decompress_block, deserialize};
+use arrow2::io::avro::read_async::*;
 
-    let options = write::SerializeOptions::default();
-    columns
-        .iter()
-        .try_for_each(|batch| write::write_chunk(writer, batch, &amp;options))
-}
+#[tokio::main(flavor = &quot;current_thread&quot;)]
+async fn main() -&gt; Result&lt;()&gt; {
+    use std::env;
+    let args: Vec&lt;String&gt; = env::args().collect();
 
-fn main() -&gt; Result&lt;()&gt; {
-    let array = Int32Array::from(&amp;[
-        Some(0),
-        Some(1),
-        Some(2),
-        Some(3),
-        Some(4),
-        Some(5),
-        Some(6),
-    ]);
-    let batch = Chunk::try_new(vec![&amp;array as &amp;dyn Array])?;
+    let file_path = &amp;args[1];
 
-    write_batch(&quot;example.csv&quot;, &amp;[batch])
-}
-</code></pre></pre>
-<h2 id="parallelism"><a class="header" href="#parallelism">Parallelism</a></h2>
-<p>This crate exposes functionality to decouple serialization from writing.</p>
-<p>In the example above, the serialization and writing to a file is done synchronously.
-However, these typically deal with different bounds: serialization is often CPU bounded, while writing is often IO bounded. We can trade-off these through a higher memory usage.</p>
-<p>Suppose that we know that we are getting CPU-bounded at serialization, and would like to offload that workload to other threads, at the cost of a higher memory usage. We would achieve this as follows (two batches for simplicity):</p>
-<pre><pre class="playground"><code class="language-rust">use std::sync::mpsc;
-use std::sync::mpsc::{Receiver, Sender};
-use std::sync::Arc;
-use std::thread;
+    let mut reader = File::open(file_path).await?.compat();
 
-use arrow2::{
-    array::{Array, Int32Array},
-    chunk::Chunk,
-    error::Result,
-    io::csv::write,
-};
+    let (avro_schemas, schema, compression, marker) = read_metadata(&amp;mut reader).await?;
+    let avro_schemas = Arc::new(avro_schemas);
 
-fn parallel_write(path: &amp;str, batches: [Chunk&lt;Arc&lt;dyn Array&gt;&gt;; 2]) -&gt; Result&lt;()&gt; {
-    let options = write::SerializeOptions::default();
+    let blocks = block_stream(&amp;mut reader, marker).await;
 
-    // write a header
-    let writer = &amp;mut write::WriterBuilder::new().from_path(path)?;
-    write::write_header(writer, &amp;[&quot;c1&quot;])?;
-
-    // prepare a channel to send serialized records from threads
-    let (tx, rx): (Sender&lt;_&gt;, Receiver&lt;_&gt;) = mpsc::channel();
-    let mut children = Vec::new();
-
-    (0..2).for_each(|id| {
-        // The sender endpoint can be cloned
-        let thread_tx = tx.clone();
-
-        let options = options.clone();
-        let batch = batches[id].clone(); // note: this is cheap
-        let child = thread::spawn(move || {
-            let records = write::serialize(&amp;batch, &amp;options).unwrap();
-            thread_tx.send(records).unwrap();
+    pin_mut!(blocks);
+    while let Some(mut block) = blocks.next().await.transpose()? {
+        let schema = schema.clone();
+        let avro_schemas = avro_schemas.clone();
+        // the content here is CPU-bounded. It should run on a dedicated thread pool
+        let handle = tokio::task::spawn_blocking(move || {
+            let mut decompressed = Block::new(0, vec![]);
+            decompress_block(&amp;mut block, &amp;mut decompressed, compression)?;
+            deserialize(&amp;decompressed, &amp;schema.fields, &amp;avro_schemas)
         });
-
-        children.push(child);
-    });
-
-    for _ in 0..2 {
-        // block: assumes that the order of batches matter.
-        let records = rx.recv().unwrap();
-        records
-            .iter()
-            .try_for_each(|record| writer.write_byte_record(record))?
-    }
-
-    for child in children {
-        child.join().expect(&quot;child thread panicked&quot;);
+        let batch = handle.await.unwrap()?;
+        assert!(!batch.is_empty());
     }
 
     Ok(())
 }
-
-fn main() -&gt; Result&lt;()&gt; {
-    let array = Int32Array::from(&amp;[
-        Some(0),
-        Some(1),
-        Some(2),
-        Some(3),
-        Some(4),
-        Some(5),
-        Some(6),
-    ]);
-    let columns = Chunk::new(vec![Arc::new(array) as Arc&lt;dyn Array&gt;]);
-
-    parallel_write(&quot;example.csv&quot;, [columns.clone(), columns])
-}
 </code></pre></pre>
+<p>Note how both decompression and deserialization is performed on a separate thread pool to not
+block (see also <a href="https://ryhl.io/blog/async-what-is-blocking/">here</a>).</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../io/csv_reader.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../io/ipc_write.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../io/parquet_read.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../io/avro_write.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -260,10 +198,10 @@ fn main() -&gt; Result&lt;()&gt; {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../io/csv_reader.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../io/ipc_write.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../io/parquet_read.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../io/avro_write.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
