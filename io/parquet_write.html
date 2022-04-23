@@ -156,14 +156,14 @@ use arrow2::{
     datatypes::{Field, Schema},
     error::Result,
     io::parquet::write::{
-        Compression, Encoding, FileWriter, RowGroupIterator, Version, WriteOptions,
+        CompressionOptions, Encoding, FileWriter, RowGroupIterator, Version, WriteOptions,
     },
 };
 
 fn write_batch(path: &amp;str, schema: Schema, columns: Chunk&lt;Arc&lt;dyn Array&gt;&gt;) -&gt; Result&lt;()&gt; {
     let options = WriteOptions {
         write_statistics: true,
-        compression: Compression::Uncompressed,
+        compression: CompressionOptions::Uncompressed,
         version: Version::V2,
     };
 
@@ -179,8 +179,7 @@ fn write_batch(path: &amp;str, schema: Schema, columns: Chunk&lt;Arc&lt;dyn Arra
 
     writer.start()?;
     for group in row_groups {
-        let (group, len) = group?;
-        writer.write(group, len)?;
+        writer.write(group?)?;
     }
     let _size = writer.end(None)?;
     Ok(())
@@ -259,7 +258,7 @@ fn parallel_write(path: &amp;str, schema: &amp;Schema, batches: &amp;[Chunk]) -&
     // declare the options
     let options = WriteOptions {
         write_statistics: true,
-        compression: Compression::Snappy,
+        compression: CompressionOptions::Snappy,
         version: Version::V2,
     };
 
@@ -312,8 +311,7 @@ fn parallel_write(path: &amp;str, schema: &amp;Schema, batches: &amp;[Chunk]) -&
     // Write the file.
     writer.start()?;
     for group in row_groups {
-        let (group, len) = group?;
-        writer.write(group, len)?;
+        writer.write(group?)?;
     }
     let _size = writer.end(None)?;
 
