@@ -467,13 +467,8 @@ contiguous memory regions or whether it does not.</p>
 <p>What this means is that certain operations can be performed irrespectively of whether a value
 is &quot;null&quot; or not (e.g. <code>PrimitiveArray&lt;i32&gt; + i32</code> can be applied to <em>all</em> values
 via SIMD and only copy the validity bitmap independently).</p>
-<p>When an operation benefits from such arrangement, it is advantageous to use</p>
-<ul>
-<li><code>Buffer::from_iter</code></li>
-<li><code>Buffer::from_trusted_len_iter</code></li>
-<li><code>Buffer::try_from_trusted_len_iter</code></li>
-</ul>
-<p>If not, then use the <code>MutableArray</code> API, such as
+<p>When an operation benefits from such arrangement, it is advantageous to use <code>Vec</code> and <code>Into&lt;Buffer&gt;</code>
+If not, then use the <code>MutableArray</code> API, such as
 <code>MutablePrimitiveArray&lt;T&gt;</code>, <code>MutableUtf8Array&lt;O&gt;</code> or <code>MutableListArray</code>.</p>
 <p>We have seen examples where the latter API was used. In the last example of this page
 you will be introduced to an example of using the former for SIMD.</p>
@@ -534,12 +529,11 @@ where
     O: NativeType,
     F: Fn(I) -&gt; O,
 {
-    // create the iterator over _all_ values
-    let values = array.values().iter().map(|v| op(*v));
-    let values = Buffer::from_trusted_len_iter(values);
+    // apply F over _all_ values
+    let values = array.values().iter().map(|v| op(*v)).collect::&lt;Vec&lt;_&gt;&gt;();
 
     // create the new array, cloning its validity
-    PrimitiveArray::&lt;O&gt;::from_data(data_type.clone(), values, array.validity().cloned())
+    PrimitiveArray::&lt;O&gt;::from_data(data_type.clone(), values.into(), array.validity().cloned())
 }
 <span class="boring">}
 </span></code></pre></pre>
@@ -1305,7 +1299,6 @@ fn write_batch(path: &amp;str, schema: Schema, columns: Chunk&lt;Arc&lt;dyn Arra
 
     let mut writer = FileWriter::try_new(file, schema, options)?;
 
-    writer.start()?;
     for group in row_groups {
         writer.write(group?)?;
     }
@@ -1437,7 +1430,6 @@ fn parallel_write(path: &amp;str, schema: &amp;Schema, batches: &amp;[Chunk]) -&
     let mut writer = FileWriter::try_new(file, schema, options)?;
 
     // Write the file.
-    writer.start()?;
     for group in row_groups {
         writer.write(group?)?;
     }
@@ -1495,22 +1487,49 @@ use arrow2::array::Array;
 use arrow2::chunk::Chunk;
 use arrow2::datatypes::Schema;
 use arrow2::error::Result;
-use arrow2::io::ipc::read::{read_file_metadata, FileReader};
+use arrow2::io::ipc::read;
 use arrow2::io::print;
 
+/// Simplest way: read all record batches from the file. This can be used e.g. for random access.
 fn read_batches(path: &amp;str) -&gt; Result&lt;(Schema, Vec&lt;Chunk&lt;Arc&lt;dyn Array&gt;&gt;&gt;)&gt; {
     let mut file = File::open(path)?;
 
     // read the files' metadata. At this point, we can distribute the read whatever we like.
-    let metadata = read_file_metadata(&amp;mut file)?;
+    let metadata = read::read_file_metadata(&amp;mut file)?;
 
     let schema = metadata.schema.clone();
 
     // Simplest way: use the reader, an iterator over batches.
-    let reader = FileReader::new(file, metadata, None);
+    let reader = read::FileReader::new(file, metadata, None);
 
     let columns = reader.collect::&lt;Result&lt;Vec&lt;_&gt;&gt;&gt;()?;
     Ok((schema, columns))
+}
+
+/// Random access way: read a single record batch from the file. This can be used e.g. for random access.
+fn read_batch(path: &amp;str) -&gt; Result&lt;(Schema, Chunk&lt;Arc&lt;dyn Array&gt;&gt;)&gt; {
+    let mut file = File::open(path)?;
+
+    // read the files' metadata. At this point, we can distribute the read whatever we like.
+    let metadata = read::read_file_metadata(&amp;mut file)?;
+
+    let schema = metadata.schema.clone();
+
+    // advanced way: read the dictionary
+    let dictionaries = read::read_file_dictionaries(&amp;mut file, &amp;metadata)?;
+
+    let chunk_index = 0;
+
+    let chunk = read::read_batch(
+        &amp;mut file,
+        &amp;dictionaries,
+        &amp;metadata,
+        None,
+        chunk_index,
+        &amp;mut vec![],
+    )?;
+
+    Ok((schema, chunk))
 }
 
 fn main() -&gt; Result&lt;()&gt; {
@@ -1522,6 +1541,10 @@ fn main() -&gt; Result&lt;()&gt; {
     let (schema, batches) = read_batches(file_path)?;
     let names = schema.fields.iter().map(|f| &amp;f.name).collect::&lt;Vec&lt;_&gt;&gt;();
     println!(&quot;{}&quot;, print::write(&amp;batches, &amp;names));
+
+    let (schema, batch) = read_batch(file_path)?;
+    let names = schema.fields.iter().map(|f| &amp;f.name).collect::&lt;Vec&lt;_&gt;&gt;();
+    println!(&quot;{}&quot;, print::write(&amp;[batch], &amp;names));
     Ok(())
 }
 </code></pre></pre>
