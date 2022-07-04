@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="high_level.html" class="active"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="high_level.html" class="active"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="io/odbc.html"><strong aria-hidden="true">9.12.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -232,7 +232,7 @@ let physical_type: PhysicalType = array.data_type().to_physical_type();
 </span></code></pre></pre>
 <p>There is a one to one relationship between each variant of <code>PhysicalType</code> (an enum) and
 an each implementation of <code>Array</code> (a struct):</p>
-<table><thead><tr><th><code>PhysicalType</code></th><th><code>Array</code></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><code>PhysicalType</code></th><th><code>Array</code></th></tr></thead><tbody>
 <tr><td><code>Primitive(_)</code></td><td><code>PrimitiveArray&lt;_&gt;</code></td></tr>
 <tr><td><code>Binary</code></td><td><code>BinaryArray&lt;i32&gt;</code></td></tr>
 <tr><td><code>LargeBinary</code></td><td><code>BinaryArray&lt;i64&gt;</code></td></tr>
@@ -247,10 +247,10 @@ an each implementation of <code>Array</code> (a struct):</p>
 <tr><td><code>Map</code></td><td><code>MapArray</code></td></tr>
 <tr><td><code>Dictionary(_)</code></td><td><code>DictionaryArray&lt;_&gt;</code></td></tr>
 </tbody></table>
+</div>
 <p>where <code>_</code> represents each of the variants (e.g. <code>PrimitiveType::Int32 &lt;-&gt; i32</code>).</p>
 <p>In this context, a common idiom in using <code>Array</code> as a trait object is as follows:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use arrow2::datatypes::{PhysicalType, PrimitiveType};
 use arrow2::array::{Array, PrimitiveArray};
@@ -330,8 +330,7 @@ perform bitmap operations.</li>
 <p>One of the main advantages of the arrow format and its memory layout is that
 it often enables SIMD. For example, an unary operation <code>op</code> on a <code>PrimitiveArray</code>
 likely emits SIMD instructions on the following code:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">use arrow2::buffer::Buffer;
 </span><span class="boring">use arrow2::{
@@ -370,6 +369,14 @@ is more expensive than operating over all values. If the operation is expensive,
 then using <code>PrimitiveArray::&lt;O&gt;::from_trusted_len_iter</code> is likely faster.</p>
 </li>
 </ol>
+<h2 id="clone-on-write-semantics"><a class="header" href="#clone-on-write-semantics">Clone on write semantics</a></h2>
+<p>We support the mutation of arrays in-place via clone-on-write semantics.
+Essentially, all data is under an <code>Arc</code>, but it can be taken via <code>Arc::get_mut</code>
+and operated in place.</p>
+<p>Below is a complete example of how to operate on a <code>Box&lt;dyn Array&gt;</code> without 
+extra allocations.</p>
+<pre><code class="language-rust ignore">{{#include ../examples/cow.rs}}
+</code></pre>
 
                     </main>
 

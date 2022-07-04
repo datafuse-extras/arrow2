@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html" class="active"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html" class="active"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html"><strong aria-hidden="true">9.12.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -158,7 +158,7 @@ fn main() -&gt; Result&lt;()&gt; {
     let file_path = &amp;args[1];
 
     let reader = File::open(file_path)?;
-    let reader = read::FileReader::try_new(reader, None, None, None, None)?;
+    let reader = read::FileReader::try_new(reader, None, Some(1024 * 8 * 8), None, None)?;
 
     println!(&quot;{:#?}&quot;, reader.schema());
 
@@ -183,8 +183,7 @@ fn main() -&gt; Result&lt;()&gt; {
 on the same thread, which may hurt performance if one of them is a bottleneck.</p>
 <p>For single-threaded reading, buffers used to read and decompress pages can be re-used.
 This create offers an API that encapsulates the above logic:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#include ../../../examples/parquet_read_record.rs}}
 <span class="boring">}
@@ -197,8 +196,7 @@ decoding, etc.).</p>
 <p>The example below assumes that CPU starves the consumption of pages,
 and that it is advantageous to have a single thread performing all IO-intensive work,
 by delegating all CPU-intensive tasks to separate threads.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#include ../../../examples/parquet_read_parallel.rs}}
 <span class="boring">}
@@ -211,7 +209,7 @@ in file readers, and a single consumer that performs all CPU-intensive work.</p>
 When reading Parquet, we must <em>infer</em> to which types we are reading the data to.
 This inference is based on Parquet's physical, logical and converted types.</p>
 <p>When a logical type is defined, we use it as follows:</p>
-<table><thead><tr><th><code>Parquet</code></th><th><code>Parquet logical</code></th><th><code>DataType</code></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><code>Parquet</code></th><th><code>Parquet logical</code></th><th><code>DataType</code></th></tr></thead><tbody>
 <tr><td>Int32</td><td>Int8</td><td>Int8</td></tr>
 <tr><td>Int32</td><td>Int16</td><td>Int16</td></tr>
 <tr><td>Int32</td><td>Int32</td><td>Int32</td></tr>
@@ -234,10 +232,11 @@ This inference is based on Parquet's physical, logical and converted types.</p>
 <tr><td>ByteArray</td><td>Decimal</td><td>Decimal</td></tr>
 <tr><td>FixedLenByteArray</td><td>Decimal</td><td>Decimal</td></tr>
 </tbody></table>
+</div>
 <p>When a logical type is not defined but a converted type is defined, we use
 the equivalent conversion as above, mutatis mutandis.</p>
 <p>When neither is defined, we fall back to the physical representation:</p>
-<table><thead><tr><th><code>Parquet</code></th><th><code>DataType</code></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><code>Parquet</code></th><th><code>DataType</code></th></tr></thead><tbody>
 <tr><td>Boolean</td><td>Boolean</td></tr>
 <tr><td>Int32</td><td>Int32</td></tr>
 <tr><td>Int64</td><td>Int64</td></tr>
@@ -247,7 +246,7 @@ the equivalent conversion as above, mutatis mutandis.</p>
 <tr><td>ByteArray</td><td>Binary</td></tr>
 <tr><td>FixedLenByteArray</td><td>FixedSizeBinary</td></tr>
 </tbody></table>
-
+</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

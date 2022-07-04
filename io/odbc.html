@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Read JSON - arrow2 documentation</title>
+        <title>Read and Write ODBC - arrow2 documentation</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html" class="active"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html"><strong aria-hidden="true">9.12.</strong> Read and Write ODBC</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_reader.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.6.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.7.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.8.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.9.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.10.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.11.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html" class="active"><strong aria-hidden="true">9.12.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,103 +134,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="json-read"><a class="header" href="#json-read">JSON read</a></h1>
-<p>When compiled with feature <code>io_json</code>, you can use this crate to read NDJSON files:</p>
-<pre><pre class="playground"><code class="language-rust">use std::fs::File;
-use std::io::{BufReader, Seek};
+                        <h1 id="odbc"><a class="header" href="#odbc">ODBC</a></h1>
+<p>When compiled with feature <code>io_odbc</code>, this crate can be used to read from, and write to
+any <a href="https://en.wikipedia.org/wiki/Open_Database_Connectivity">ODBC</a> interface:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../../../examples/odbc.rs}}
+<span class="boring">}
+</span></code></pre></pre>
 
-use arrow2::array::Array;
-use arrow2::error::Result;
-use arrow2::io::ndjson::read;
-use arrow2::io::ndjson::read::FallibleStreamingIterator;
-
-fn read_path(path: &amp;str) -&gt; Result&lt;Vec&lt;Box&lt;dyn Array&gt;&gt;&gt; {
-    let batch_size = 1024; // number of rows per array
-    let mut reader = BufReader::new(File::open(path)?);
-
-    let data_type = read::infer(&amp;mut reader, None)?;
-    reader.rewind()?;
-
-    let mut reader = read::FileReader::new(reader, vec![&quot;&quot;.to_string(); batch_size], None);
-
-    let mut arrays = vec![];
-    // `next` is IO-bounded
-    while let Some(rows) = reader.next()? {
-        // `deserialize` is CPU-bounded
-        let array = read::deserialize(rows, data_type.clone())?;
-        arrays.push(array);
-    }
-
-    Ok(arrays)
-}
-
-fn main() -&gt; Result&lt;()&gt; {
-    // Example of reading a NDJSON file from a path
-    use std::env;
-    let args: Vec&lt;String&gt; = env::args().collect();
-
-    let file_path = &amp;args[1];
-
-    let arrays = read_path(file_path)?;
-    println!(&quot;{:#?}&quot;, arrays);
-    Ok(())
-}
-</code></pre></pre>
-<p>Note how deserialization can be performed on a separate thread pool to avoid
-blocking the runtime (see also <a href="https://ryhl.io/blog/async-what-is-blocking/">here</a>).</p>
-<p>This crate also supports reading JSON, at the expense of being unable to read the file in chunks.</p>
-<pre><pre class="playground"><code class="language-rust">/// Example of reading a JSON file.
-use std::fs;
-
-use arrow2::array::Array;
-use arrow2::error::Result;
-use arrow2::io::json::read;
-
-fn read_path(path: &amp;str) -&gt; Result&lt;Box&lt;dyn Array&gt;&gt; {
-    // read the file into memory (IO-bounded)
-    let data = fs::read(path)?;
-
-    // create a non-owning struct of the data (CPU-bounded)
-    let json = read::json_deserializer::parse(&amp;data)?;
-
-    // use it to infer an Arrow schema (CPU-bounded)
-    let data_type = read::infer(&amp;json)?;
-
-    // and deserialize it (CPU-bounded)
-    read::deserialize(&amp;json, data_type)
-}
-
-fn main() -&gt; Result&lt;()&gt; {
-    use std::env;
-    let args: Vec&lt;String&gt; = env::args().collect();
-
-    let file_path = &amp;args[1];
-
-    let batch = read_path(file_path)?;
-    println!(&quot;{:#?}&quot;, batch);
-    Ok(())
-}
-</code></pre></pre>
-<h2 id="metadata-and-inference"><a class="header" href="#metadata-and-inference">Metadata and inference</a></h2>
-<p>This crate uses the following mapping between Arrow's data type and JSON:</p>
-<div class="table-wrapper"><table><thead><tr><th><code>JSON</code></th><th><code>DataType</code></th></tr></thead><tbody>
-<tr><td>Bool</td><td>Boolean</td></tr>
-<tr><td>Int</td><td>Int64</td></tr>
-<tr><td>Float</td><td>Float64</td></tr>
-<tr><td>String</td><td>Utf8</td></tr>
-<tr><td>List</td><td>List</td></tr>
-<tr><td>Object</td><td>Struct</td></tr>
-</tbody></table>
-</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../io/avro_write.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../io/json_write.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
-                            </a>
-                            <a rel="next" href="../io/json_write.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -238,11 +156,8 @@ fn main() -&gt; Result&lt;()&gt; {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../io/avro_write.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../io/json_write.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a rel="next" href="../io/json_write.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
