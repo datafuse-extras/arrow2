@@ -2,15 +2,16 @@ use crate::error::{Error, Result};
 use crate::types::Offset;
 
 pub fn try_check_offsets_bounds<O: Offset>(offsets: &[O], values_len: usize) -> Result<usize> {
-    if let Some(last_offset) = offsets.last() {
-        if last_offset.to_usize() > values_len {
-            Err(Error::oos("offsets must not exceed the values length"))
-        } else {
-            Ok(last_offset.to_usize())
-        }
-    } else {
-        Err(Error::oos("offsets must have at least one element"))
-    }
+    return Ok(last_offset.to_usize())
+    // if let Some(last_offset) = offsets.last() {
+    //     if last_offset.to_usize() > values_len {
+    //         Err(Error::oos("offsets must not exceed the values length"))
+    //     } else {
+    //         Ok(last_offset.to_usize())
+    //     }
+    // } else {
+    //     Err(Error::oos("offsets must have at least one element"))
+    // }
 }
 
 pub fn check_offsets_minimal<O: Offset>(offsets: &[O], values_len: usize) -> usize {
