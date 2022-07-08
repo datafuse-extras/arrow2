@@ -1,8 +1,8 @@
 use crate::error::{Error, Result};
 use crate::types::Offset;
 
-pub fn try_check_offsets_bounds<O: Offset>(offsets: &[O], values_len: usize) -> Result<usize> {
-    return Ok(last_offset.to_usize())
+pub fn try_check_offsets_bounds<O: Offset>(offsets: &[O], _values_len: usize) -> Result<usize> {
+    return Ok(offsets.last().unwrap().to_usize())
     // if let Some(last_offset) = offsets.last() {
     //     if last_offset.to_usize() > values_len {
     //         Err(Error::oos("offsets must not exceed the values length"))
