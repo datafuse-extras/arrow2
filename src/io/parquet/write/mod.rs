@@ -43,6 +43,8 @@ pub struct WriteOptions {
     pub version: Version,
     /// The compression to apply to every page
     pub compression: CompressionOptions,
+    /// The limnit (in bytes) of data page size
+    pub data_page_size_limit: usize,
 }
 
 use crate::compute::aggregate::estimated_bytes_size;
@@ -104,7 +106,8 @@ pub fn array_to_pages(
     // we also check for an array.len > 3 to prevent infinite recursion
     // still have to figure out how to deal with values that are i32::MAX size, such as very large
     // strings or a list column with many elements
-    if (estimated_bytes_size(array)) >= (2u32.pow(31) - 2u32.pow(25)) as usize && array.len() > 3 {
+    let page_size_limit = std::cmp::min(options.data_page_size_limit, (2u32.pow(31) - 2u32.pow(25)) as usize);
+    if (estimated_bytes_size(array)) >= page_size_limit && array.len() > 3 {
         let split_at = array.len() / 2;
         let left = array.slice(0, split_at);
         let right = array.slice(split_at, array.len() - split_at);
@@ -367,7 +370,7 @@ pub fn array_to_page_simple(
             other
         ))),
     }
-    .map(EncodedPage::Data)
+        .map(EncodedPage::Data)
 }
 
 fn array_to_page_nested(
@@ -448,7 +451,7 @@ fn array_to_page_nested(
             other
         ))),
     }
-    .map(EncodedPage::Data)
+        .map(EncodedPage::Data)
 }
 
 fn transverse_recursive<T, F: Fn(&DataType) -> T + Clone>(
