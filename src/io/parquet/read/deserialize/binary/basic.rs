@@ -445,19 +445,28 @@ impl<O: Offset, A: TraitBinaryArray<O>, I: DataPages> Iterator for Iter<O, A, I>
     type Item = Result<A>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let maybe_state = next(
+        let mut maybe_state = next(
             &mut self.iter,
             &mut self.items,
             self.chunk_size,
             &BinaryDecoder::<O>::default(),
         );
+
+        while let MaybeNext::More = maybe_state  {
+            maybe_state = next(
+                &mut self.iter,
+                &mut self.items,
+                self.chunk_size,
+                &BinaryDecoder::<O>::default(),
+            )
+        }
         match maybe_state {
             MaybeNext::Some(Ok((values, validity))) => {
                 Some(finish(&self.data_type, values, validity))
             }
             MaybeNext::Some(Err(e)) => Some(Err(e)),
             MaybeNext::None => None,
-            MaybeNext::More => self.next(),
+            _ => unreachable!(),
         }
     }
 }
