@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html" class="active"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -191,24 +193,24 @@ use arrow2::io::odbc::read;
 use arrow2::io::odbc::write;
 
 fn main() -&gt; Result&lt;()&gt; {
-    let connector = &quot;Driver={SQLite3};Database=sqlite-test.db&quot;;
+    let connector = "Driver={SQLite3};Database=sqlite-test.db";
     let env = api::Environment::new()?;
     let connection = env.connect_with_connection_string(connector)?;
 
     // let's create an empty table with a schema
-    connection.execute(&quot;DROP TABLE IF EXISTS example;&quot;, ())?;
-    connection.execute(&quot;CREATE TABLE example (c1 INT, c2 TEXT);&quot;, ())?;
+    connection.execute("DROP TABLE IF EXISTS example;", ())?;
+    connection.execute("CREATE TABLE example (c1 INT, c2 TEXT);", ())?;
 
     // and now let's write some data into it (from arrow arrays!)
     // first, we prepare the statement
-    let query = &quot;INSERT INTO example (c1, c2) VALUES (?, ?)&quot;;
+    let query = "INSERT INTO example (c1, c2) VALUES (?, ?)";
     let prepared = connection.prepare(query).unwrap();
 
     // secondly, we initialize buffers from odbc-api
     let fields = vec![
         // (for now) the types here must match the tables' schema
-        Field::new(&quot;unused&quot;, DataType::Int32, true),
-        Field::new(&quot;unused&quot;, DataType::LargeUtf8, true),
+        Field::new("unused", DataType::Int32, true),
+        Field::new("unused", DataType::LargeUtf8, true),
     ];
 
     // third, we initialize the writer
@@ -217,14 +219,14 @@ fn main() -&gt; Result&lt;()&gt; {
     // say we have (or receive from a channel) a chunk:
     let chunk = Chunk::new(vec![
         Box::new(Int32Array::from_slice([1, 2, 3])) as Box&lt;dyn Array&gt;,
-        Box::new(Utf8Array::&lt;i64&gt;::from([Some(&quot;Hello&quot;), None, Some(&quot;World&quot;)])),
+        Box::new(Utf8Array::&lt;i64&gt;::from([Some("Hello"), None, Some("World")])),
     ]);
 
     // we write it like this
     writer.write(&amp;chunk)?;
 
     // and we can later read from it
-    let chunks = read(&amp;connection, &quot;SELECT c1 FROM example&quot;)?;
+    let chunks = read(&amp;connection, "SELECT c1 FROM example")?;
 
     // and the result should be the same
     assert_eq!(chunks[0].columns()[0], chunk.columns()[0]);

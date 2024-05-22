@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="metadata.html" class="active"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_stream_read.html"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="io/odbc.html"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -180,14 +182,14 @@ fn main() {
     let type2_ = DataType::Int32;
 
     // two fields (columns)
-    let field1 = Field::new(&quot;c1&quot;, type1_, true);
-    let field2 = Field::new(&quot;c2&quot;, type2_, true);
+    let field1 = Field::new("c1", type1_, true);
+    let field2 = Field::new("c2", type2_, true);
 
     // which can contain extra metadata:
     let mut metadata = Metadata::new();
     metadata.insert(
-        &quot;Office Space&quot;.to_string(),
-        &quot;Deals with real issues in the workplace.&quot;.to_string(),
+        "Office Space".to_string(),
+        "Deals with real issues in the workplace.".to_string(),
     );
     let field1 = field1.with_metadata(metadata);
 
@@ -199,8 +201,8 @@ fn main() {
     // which can also contain extra metadata:
     let mut metadata = Metadata::new();
     metadata.insert(
-        &quot;Office Space&quot;.to_string(),
-        &quot;Deals with real issues in the workplace.&quot;.to_string(),
+        "Office Space".to_string(),
+        "Deals with real issues in the workplace.".to_string(),
     );
     let schema = schema.with_metadata(metadata);
 
@@ -225,7 +227,7 @@ nullable (<code>bool</code>), and optional metadata.</p>
 <h2 id="schema-table-metadata"><a class="header" href="#schema-table-metadata"><code>Schema</code> (table metadata)</a></h2>
 <p>The most common use of <code>Field</code> is to declare a <code>arrow2::datatypes::Schema</code>, a sequence of <code>Field</code>s
 with optional metadata.</p>
-<p><code>Schema</code> is essentially metadata of a &quot;table&quot;: it has a sequence of named columns and their metadata (<code>Field</code>s) with optional metadata.</p>
+<p><code>Schema</code> is essentially metadata of a "table": it has a sequence of named columns and their metadata (<code>Field</code>s) with optional metadata.</p>
 
                     </main>
 

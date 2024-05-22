@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html" class="active"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -207,10 +209,10 @@ fn main() -&gt; Result&lt;(), Error&gt; {
     // we can read the statistics of all parquet's row groups (here for each field)
     for field in &amp;schema.fields {
         let statistics = read::statistics::deserialize(field, &amp;metadata.row_groups)?;
-        println!(&quot;{statistics:#?}&quot;);
+        println!("{statistics:#?}");
     }
 
-    // say we found that we only need to read the first two row groups, &quot;0&quot; and &quot;1&quot;
+    // say we found that we only need to read the first two row groups, "0" and "1"
     let row_groups = metadata
         .row_groups
         .into_iter()
@@ -227,7 +229,7 @@ fn main() -&gt; Result&lt;(), Error&gt; {
         let chunk = maybe_chunk?;
         assert!(!chunk.is_empty());
     }
-    println!(&quot;took: {} ms&quot;, start.elapsed().unwrap().as_millis());
+    println!("took: {} ms", start.elapsed().unwrap().as_millis());
     Ok(())
 }</code></pre></pre>
 <p>The example above minimizes memory usage at the expense of mixing IO and CPU tasks
@@ -291,9 +293,9 @@ fn parallel_read(path: &amp;str, row_group: usize) -&gt; Result&lt;()&gt; {
     let mut num_rows = row_group.num_rows();
     while num_rows &gt; 0 {
         num_rows = num_rows.saturating_sub(chunk_size);
-        trace!(&quot;[parquet/deserialize][start]&quot;);
+        trace!("[parquet/deserialize][start]");
         let chunk = deserialize_parallel(&amp;mut columns)?;
-        trace!(&quot;[parquet/deserialize][end][{}]&quot;, chunk.len());
+        trace!("[parquet/deserialize][end][{}]", chunk.len());
         assert!(!chunk.is_empty());
     }
     Ok(())
@@ -311,7 +313,7 @@ fn main() -&gt; Result&lt;()&gt; {
 
     let start = SystemTime::now();
     parallel_read(file_path, row_group)?;
-    println!(&quot;took: {} ms&quot;, start.elapsed().unwrap().as_millis());
+    println!("took: {} ms", start.elapsed().unwrap().as_millis());
 
     Ok(())
 }</code></pre></pre>

@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="../arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="../low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="../high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="../compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="../metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="../ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="../extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="../io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="../io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="../io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="../io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="../io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="../io/ipc_stream_read.html" class="active"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="../io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="../io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="../io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="../io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="../io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="../io/odbc.html"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -184,7 +186,7 @@ use arrow2::error::Result;
 use arrow2::io::ipc::read;
 
 fn main() -&gt; Result&lt;()&gt; {
-    const ADDRESS: &amp;str = &quot;127.0.0.1:12989&quot;;
+    const ADDRESS: &amp;str = "127.0.0.1:12989";
 
     let mut reader = TcpStream::connect(ADDRESS)?;
     let metadata = read::read_stream_metadata(&amp;mut reader)?;
@@ -196,10 +198,10 @@ fn main() -&gt; Result&lt;()&gt; {
             Some(x) =&gt; match x {
                 Ok(read::StreamState::Some(b)) =&gt; {
                     idx += 1;
-                    println!(&quot;batch: {:?}&quot;, idx)
+                    println!("batch: {:?}", idx)
                 }
                 Ok(read::StreamState::Waiting) =&gt; thread::sleep(Duration::from_millis(2000)),
-                Err(l) =&gt; println!(&quot;{:?} ({})&quot;, l, idx),
+                Err(l) =&gt; println!("{:?} ({})", l, idx),
             },
             None =&gt; break,
         };
@@ -214,20 +216,20 @@ import socket
 
 # Set up the data exchange socket
 sk = socket.socket()
-sk.bind((&quot;127.0.0.1&quot;, 12989))
+sk.bind(("127.0.0.1", 12989))
 sk.listen()
 
 data = [
     pa.array([1, 2, 3, 4]),
-    pa.array([&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;, None]),
+    pa.array(["foo", "bar", "baz", None]),
     pa.array([True, None, False, True]),
 ]
 
-batch = pa.record_batch(data, names=[&quot;f0&quot;, &quot;f1&quot;, &quot;f2&quot;])
+batch = pa.record_batch(data, names=["f0", "f1", "f2"])
 
 # Accept incoming connection and stream the data away
 connection, address = sk.accept()
-dummy_socket_file = connection.makefile(&quot;wb&quot;)
+dummy_socket_file = connection.makefile("wb")
 with pa.RecordBatchStreamWriter(dummy_socket_file, batch.schema) as writer:
     for i in range(50):
         writer.write_batch(batch)

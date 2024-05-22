@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="high_level.html" class="active"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="extension.html"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_stream_read.html"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="io/odbc.html"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -216,8 +218,8 @@ In the example</p>
 let dates = PrimitiveArray::&lt;i32&gt;::from([Some(1), None]).to(DataType::Date32);
 <span class="boring">}</span></code></pre></pre>
 <p><code>ints</code> and <code>dates</code> have the same in-memory representation but different logic
-representations (e.g. dates are usually printed to users as &quot;yyyy-mm-dd&quot;).</p>
-<p>All physical types (e.g. <code>i32</code>) have a &quot;natural&quot; logical <code>DataType</code> (e.g. <code>DataType::Int32</code>)
+representations (e.g. dates are usually printed to users as "yyyy-mm-dd").</p>
+<p>All physical types (e.g. <code>i32</code>) have a "natural" logical <code>DataType</code> (e.g. <code>DataType::Int32</code>)
 which is assigned when allocating arrays from iterators, slices, etc.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">use arrow2::array::{Array, Int32Array, PrimitiveArray};
 </span><span class="boring">use arrow2::datatypes::DataType;
@@ -299,7 +301,7 @@ fn float_operator(array: &amp;dyn Array) -&gt; Result&lt;Box&lt;dyn Array&gt;, S
             let array = array.clone();
             Ok(Box::new(array))
         }
-        _ =&gt; Err(&quot;This operator is only valid for float point arrays&quot;.to_string()),
+        _ =&gt; Err("This operator is only valid for float point arrays".to_string()),
     }
 }
 <span class="boring">}</span></code></pre></pre>
@@ -311,7 +313,7 @@ and how to make them even more efficient.</p>
 <p>This crate's APIs are generally split into two patterns: whether an operation leverages
 contiguous memory regions or whether it does not.</p>
 <p>What this means is that certain operations can be performed irrespectively of whether a value
-is &quot;null&quot; or not (e.g. <code>PrimitiveArray&lt;i32&gt; + i32</code> can be applied to <em>all</em> values
+is "null" or not (e.g. <code>PrimitiveArray&lt;i32&gt; + i32</code> can be applied to <em>all</em> values
 via SIMD and only copy the validity bitmap independently).</p>
 <p>When an operation benefits from such arrangement, it is advantageous to use <code>Vec</code> and <code>Into&lt;Buffer&gt;</code>
 If not, then use the <code>MutableArray</code> API, such as
@@ -327,9 +329,9 @@ you will be introduced to an example of using the former for SIMD.</p>
 
 for item in array.iter() {
     if let Some(value) = item {
-        println!(&quot;{}&quot;, value);
+        println!("{}", value);
     } else {
-        println!(&quot;NULL&quot;);
+        println!("NULL");
     }
 }
 <span class="boring">}</span></code></pre></pre>
@@ -344,7 +346,7 @@ use <code>array.values() -&gt; &amp;Buffer&lt;T&gt;</code> and <code>array.valid
 validity and values, while the latter is suitable for SIMD and copies, as they return
 contiguous memory regions (buffers and bitmaps). We will see below how to leverage these APIs.</p>
 <p>This idea holds more generally in this crate's arrays: <code>values()</code> returns something that has
-a contiguous in-memory representation, while <code>iter()</code> returns items taking validity into account. 
+a contiguous in-memory representation, while <code>iter()</code> returns items taking validity into account.
 To get an iterator over contiguous values, use <code>array.values().iter()</code>.</p>
 <p>There is one last API that is worth mentioning, and that is <code>Bitmap::chunks</code>. When performing
 bitwise operations, it is often more performant to operate on chunks of bits
@@ -400,7 +402,7 @@ then using <code>PrimitiveArray::&lt;O&gt;::from_trusted_len_iter</code> is like
 <p>We support the mutation of arrays in-place via clone-on-write semantics.
 Essentially, all data is under an <code>Arc</code>, but it can be taken via <code>Arc::get_mut</code>
 and operated in place.</p>
-<p>Below is a complete example of how to operate on a <code>Box&lt;dyn Array&gt;</code> without 
+<p>Below is a complete example of how to operate on a <code>Box&lt;dyn Array&gt;</code> without
 extra allocations.</p>
 <pre><code class="language-rust ignore">// This example demos how to operate on arrays in-place.
 use arrow2::array::{Array, PrimitiveArray};

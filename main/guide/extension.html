@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Arrow2</a></li><li class="chapter-item expanded "><a href="arrow.html"><strong aria-hidden="true">2.</strong> The arrow format</a></li><li class="chapter-item expanded "><a href="low_level.html"><strong aria-hidden="true">3.</strong> Low-level API</a></li><li class="chapter-item expanded "><a href="high_level.html"><strong aria-hidden="true">4.</strong> High-level API</a></li><li class="chapter-item expanded "><a href="compute.html"><strong aria-hidden="true">5.</strong> Compute</a></li><li class="chapter-item expanded "><a href="metadata.html"><strong aria-hidden="true">6.</strong> Metadata</a></li><li class="chapter-item expanded "><a href="ffi.html"><strong aria-hidden="true">7.</strong> Foreign interfaces</a></li><li class="chapter-item expanded "><a href="extension.html" class="active"><strong aria-hidden="true">8.</strong> Extension</a></li><li class="chapter-item expanded "><a href="io/index.html"><strong aria-hidden="true">9.</strong> IO</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="io/csv_read.html"><strong aria-hidden="true">9.1.</strong> Read CSV</a></li><li class="chapter-item expanded "><a href="io/csv_write.html"><strong aria-hidden="true">9.2.</strong> Write CSV</a></li><li class="chapter-item expanded "><a href="io/parquet_read.html"><strong aria-hidden="true">9.3.</strong> Read Parquet</a></li><li class="chapter-item expanded "><a href="io/parquet_write.html"><strong aria-hidden="true">9.4.</strong> Write Parquet</a></li><li class="chapter-item expanded "><a href="io/ipc_read.html"><strong aria-hidden="true">9.5.</strong> Read Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_mmap.html"><strong aria-hidden="true">9.6.</strong> Memory map Arrow</a></li><li class="chapter-item expanded "><a href="io/ipc_stream_read.html"><strong aria-hidden="true">9.7.</strong> Read Arrow stream</a></li><li class="chapter-item expanded "><a href="io/ipc_write.html"><strong aria-hidden="true">9.8.</strong> Write Arrow</a></li><li class="chapter-item expanded "><a href="io/avro_read.html"><strong aria-hidden="true">9.9.</strong> Read Avro</a></li><li class="chapter-item expanded "><a href="io/avro_write.html"><strong aria-hidden="true">9.10.</strong> Write Avro</a></li><li class="chapter-item expanded "><a href="io/json_read.html"><strong aria-hidden="true">9.11.</strong> Read JSON</a></li><li class="chapter-item expanded "><a href="io/json_write.html"><strong aria-hidden="true">9.12.</strong> Write JSON</a></li><li class="chapter-item expanded "><a href="io/odbc.html"><strong aria-hidden="true">9.13.</strong> Read and Write ODBC</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -172,7 +174,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="extension-types"><a class="header" href="#extension-types">Extension types</a></h1>
-<p>This crate supports Arrows' <a href="https://arrow.apache.org/docs/format/Columnar.html#extension-types">&quot;extension type&quot;</a>, to declare, use, and share custom logical types.</p>
+<p>This crate supports Arrows' <a href="https://arrow.apache.org/docs/format/Columnar.html#extension-types">"extension type"</a>, to declare, use, and share custom logical types.</p>
 <p>An extension type is just a <code>DataType</code> with a name and some metadata.
 In particular, its physical representation is equal to its inner <code>DataType</code>, which implies
 that all functionality in this crate works as if it was the inner <code>DataType</code>.</p>
@@ -189,7 +191,7 @@ use arrow2::io::ipc::write;
 fn main() -&gt; Result&lt;()&gt; {
     // declare an extension.
     let extension_type =
-        DataType::Extension(&quot;date16&quot;.to_string(), Box::new(DataType::UInt16), None);
+        DataType::Extension("date16".to_string(), Box::new(DataType::UInt16), None);
 
     // initialize an array with it.
     let array = UInt16Array::from_slice([1, 2]).to(extension_type.clone());
@@ -213,7 +215,7 @@ fn main() -&gt; Result&lt;()&gt; {
 }
 
 fn write_ipc&lt;W: Write + Seek&gt;(writer: W, array: impl Array + 'static) -&gt; Result&lt;W&gt; {
-    let schema = vec![Field::new(&quot;a&quot;, array.data_type().clone(), false)].into();
+    let schema = vec![Field::new("a", array.data_type().clone(), false)].into();
 
     let options = write::WriteOptions { compression: None };
     let mut writer = write::FileWriter::new(writer, schema, None, options);
